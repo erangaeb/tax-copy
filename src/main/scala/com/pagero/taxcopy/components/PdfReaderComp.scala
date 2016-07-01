@@ -9,8 +9,8 @@ trait PdfReaderComp {
 
   trait PdfReader {
 
-    def createAcc(path: String)
-    
+    def readPdfs(path: String)
+
   }
 
 }

@@ -8,7 +8,7 @@ trait TaxCopyPdfReaderComp extends PdfReaderComp {
   val pdfReader = new TaxCopyPdfReader
 
   class TaxCopyPdfReader extends PdfReader {
-    override def createAcc(path: String) = {
+    override def readPdfs(path: String) = {
 
     }
   }
