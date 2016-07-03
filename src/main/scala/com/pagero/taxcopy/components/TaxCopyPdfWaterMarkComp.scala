@@ -1,6 +1,6 @@
 package com.pagero.taxcopy.components
 
-import java.io.FileOutputStream
+import java.io.{ByteArrayOutputStream, FileOutputStream}
 
 import com.itextpdf.text.{Phrase, Font}
 import com.itextpdf.text.Element;
@@ -15,14 +15,15 @@ trait TaxCopyPdfWaterMarkComp extends PdfWaterMarkComp {
   val pdfWaterMark = new TaxCopyPdfWaterMark
 
   class TaxCopyPdfWaterMark extends PdfWaterMark {
-    override def addWaterMark(pdfContent: Array[Byte]) = {
-      val reader: PdfReader = new PdfReader(pdfContent)
-      val stamper: PdfStamper = new PdfStamper(reader, new FileOutputStream("/Users/eranga/Desktop/phd-surrey/lambda.pdf"))
-      val under: PdfContentByte = stamper.getUnderContent(1);
+    override def addWaterMark(pdf: Array[Byte], waterMark: String) {
+      val reader: PdfReader = new PdfReader(pdf)
+      val stamper: PdfStamper = new PdfStamper(reader, new FileOutputStream(s"/Users/eranga/Desktop/phd-surrey/$waterMark.pdf"))
+      //val stamper: PdfStamper = new PdfStamper(reader, new ByteArrayOutputStream())
+      val under: PdfContentByte = stamper.getUnderContent(1)
 
       // text watermark
       val font: Font = new Font(FontFamily.HELVETICA, 50)
-      val phrase: Phrase = new Phrase("Lambda", font)
+      val phrase: Phrase = new Phrase(waterMark, font)
 
       // find x and y alignments and add phrase
       val x = (reader.getPageSize(1).getLeft + reader.getPageSize(1).getRight) / 2

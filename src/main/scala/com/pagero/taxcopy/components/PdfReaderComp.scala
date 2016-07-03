@@ -1,5 +1,7 @@
 package com.pagero.taxcopy.components
 
+import scala.collection.mutable.ListBuffer
+
 /**
  * Created by eranga on 7/1/16.
  */
@@ -9,7 +11,7 @@ trait PdfReaderComp {
 
   trait PdfReader {
 
-    def readPdfs(path: String)
+    def readPdfs(path: String): ListBuffer[Array[Byte]]
 
   }
 

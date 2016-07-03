@@ -2,8 +2,10 @@ package com.pagero.taxcopy.actors
 
 import akka.actor.SupervisorStrategy.{Stop, Restart}
 import akka.actor.{Props, OneForOneStrategy, Actor}
-import com.pagero.taxcopy.components.PdfReaderComp
+import com.pagero.taxcopy.components.{TaxCopyPdfWaterMarkComp, PdfReaderComp}
 import org.slf4j.LoggerFactory
+
+import scala.util.Random
 
 trait InputHandlerComp {
 
@@ -37,7 +39,13 @@ trait InputHandlerComp {
 
     override def receive: Receive = {
       case Input(path) =>
-        pdfReader.readPdfs(path)
+        val pdfs = pdfReader.readPdfs(path)
+        for (pdf <- pdfs) {
+          // start actor to process the pdf
+          val waterMarkerComp = new WaterMarkerComp with TaxCopyPdfWaterMarkComp
+          val waterMarker = context.actorOf(waterMarkerComp.WaterMarker.props())
+          waterMarker ! waterMarkerComp.WaterMarker.PdfWaterMark(pdf, "lambda" + Random.nextInt(100))
+        }
     }
   }
 

@@ -8,7 +8,7 @@ trait PdfWaterMarkComp {
   val pdfWaterMark: PdfWaterMark
 
   trait PdfWaterMark {
-    def addWaterMark(pdfContent: Array[Byte])
+    def addWaterMark(pdf: Array[Byte], waterMark: String)
   }
 
 }
