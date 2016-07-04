@@ -2,7 +2,6 @@ package com.pagero.taxcopy.actors
 
 import akka.actor.SupervisorStrategy.{Restart, Stop}
 import akka.actor.{Actor, OneForOneStrategy, Props}
-import com.pagero.taxcopy.components.TaxCopyPdfReaderComp
 import org.slf4j.LoggerFactory
 
 object InputReader {
@@ -47,8 +46,7 @@ class InputReader extends Actor {
       logger.debug("Input : " + input)
 
       // handle input via handler actor
-      val inputHandlerComp = new InputHandlerComp with TaxCopyPdfReaderComp
-      val inputHandler = context.actorOf(inputHandlerComp.InputHandler.props())
-      inputHandler ! inputHandlerComp.InputHandler.Input(input)
+      val inputHandler = context.actorOf(InputHandler.props())
+      inputHandler ! InputHandler.Input(input)
   }
 }

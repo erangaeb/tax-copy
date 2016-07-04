@@ -12,11 +12,11 @@ object Main extends App {
 
   def logger = LoggerFactory.getLogger(this.getClass)
 
-  logger.debug("Booting application")
+  logger.info("Booting application")
 
   implicit val system = ActorSystem("tax-copy")
 
-  // start senz listener
+  // start input listener
   val inputReader = system.actorOf(InputReader.props(), name = "InputReader")
   inputReader ! InitReader
 }
