@@ -13,6 +13,7 @@ object InputHandler {
   case class Input(path: String)
 
   def props(): Props = Props(new InputHandler())
+  
 }
 
 class InputHandler extends Actor with TaxCopyPdfReaderComp {

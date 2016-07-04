@@ -9,6 +9,7 @@ object InputReader {
   case class InitReader()
 
   def props(): Props = Props(new InputReader())
+  
 }
 
 class InputReader extends Actor {
