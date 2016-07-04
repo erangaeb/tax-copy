@@ -3,22 +3,23 @@ package com.pagero.taxcopy.actors
 import akka.actor.{Actor, Props}
 import com.pagero.taxcopy.components.{CassandraStorageDbComp, TaxCopyPdfWaterMarkComp}
 import com.pagero.taxcopy.config.StorageCassandraCluster
+import com.pagero.taxcopy.protocols.Attachment
 import org.slf4j.LoggerFactory
 
 /**
  * Created by eranga on 7/3/16.
  */
-object WaterMarker {
+object AttachmentHandler {
 
-  case class PdfWaterMark(pdf: Array[Byte], waterMark: String)
+  case class AttachmentWaterMark(attachment: Attachment, waterMark: String)
 
-  def props(): Props = Props(new WaterMarker())
+  def props(): Props = Props(new AttachmentHandler())
 
 }
 
-class WaterMarker extends Actor with TaxCopyPdfWaterMarkComp with CassandraStorageDbComp with StorageCassandraCluster {
+class AttachmentHandler extends Actor with TaxCopyPdfWaterMarkComp with CassandraStorageDbComp with StorageCassandraCluster {
 
-  import WaterMarker._
+  import AttachmentHandler._
 
   def logger = LoggerFactory.getLogger(this.getClass)
 
@@ -27,12 +28,12 @@ class WaterMarker extends Actor with TaxCopyPdfWaterMarkComp with CassandraStora
   }
 
   override def receive: Receive = {
-    case PdfWaterMark(pdf, waterMark) =>
+    case AttachmentWaterMark(attachment, waterMark) =>
       // add watermark
-      pdfWaterMark.addWaterMark(pdf, waterMark)
+      pdfWaterMark.addWaterMark(attachment.content, waterMark)
 
       // save in the database
-      storageDb.saveAttachment(pdf)
+      storageDb.saveAttachment(attachment.content)
   }
 
 }

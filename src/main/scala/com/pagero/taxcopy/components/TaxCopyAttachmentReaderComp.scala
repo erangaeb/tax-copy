@@ -2,6 +2,7 @@ package com.pagero.taxcopy.components
 
 import java.io.File
 
+import com.pagero.taxcopy.protocols.Attachment
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.ListBuffer
@@ -9,27 +10,28 @@ import scala.collection.mutable.ListBuffer
 /**
  * Created by eranga on 7/1/16.
  */
-trait TaxCopyPdfReaderComp extends PdfReaderComp {
+trait TaxCopyAttachmentReaderComp extends AttachmentReaderComp {
 
   def logger = LoggerFactory.getLogger(this.getClass)
 
-  val pdfReader = new TaxCopyPdfReader
+  val attachmentReader = new TaxCopyAttachmentReader
 
-  class TaxCopyPdfReader extends PdfReader {
-    override def readPdfs(path: String): ListBuffer[Array[Byte]] = {
+  class TaxCopyAttachmentReader extends AttachmentReader {
+    override def readAttachments(path: String): ListBuffer[Attachment] = {
       logger.info("Reading pdf file content from " + path)
 
-      val pdfs = ListBuffer[Array[Byte]]()
+      val attachments = ListBuffer[Attachment]()
 
-      val files = getFileNames(path)
+      val files = getFiles(path)
       for (file <- files) {
-        pdfs += readFileContent(file)
+        val attachment = Attachment(file.getName, readFileContent(file))
+        attachments += attachment
       }
 
-      pdfs
+      attachments
     }
 
-    def getFileNames(dirName: String): List[File] = {
+    def getFiles(dirName: String): List[File] = {
       val dir = new File(dirName)
       if (dir.exists && dir.isDirectory) {
         dir.listFiles.filter(f => f.isFile && f.getName.endsWith(".pdf")).toList
