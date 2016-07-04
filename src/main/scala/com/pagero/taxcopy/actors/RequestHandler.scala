@@ -8,17 +8,17 @@ import org.slf4j.LoggerFactory
 import scala.util.Random
 
 
-object InputHandler {
+object RequestHandler {
 
-  case class Input(path: String)
+  case class Request(path: String)
 
-  def props(): Props = Props(new InputHandler())
+  def props(): Props = Props(new RequestHandler())
 
 }
 
-class InputHandler extends Actor with TaxCopyAttachmentReaderComp {
+class RequestHandler extends Actor with TaxCopyAttachmentReaderComp {
 
-  import InputHandler._
+  import RequestHandler._
 
   def actorLogger = LoggerFactory.getLogger(this.getClass)
 
@@ -36,7 +36,7 @@ class InputHandler extends Actor with TaxCopyAttachmentReaderComp {
   }
 
   override def receive: Receive = {
-    case Input(path) =>
+    case Request(path) =>
       val attachments = attachmentReader.readAttachments(path)
       for (attachment <- attachments) {
         // start actor to process the pdf

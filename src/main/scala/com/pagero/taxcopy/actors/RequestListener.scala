@@ -4,17 +4,17 @@ import akka.actor.SupervisorStrategy.{Restart, Stop}
 import akka.actor.{Actor, OneForOneStrategy, Props}
 import org.slf4j.LoggerFactory
 
-object InputReader {
+object RequestListener {
 
-  case class InitReader()
+  case class InitListener()
 
-  def props(): Props = Props(new InputReader())
-  
+  def props(): Props = Props(new RequestListener())
+
 }
 
-class InputReader extends Actor {
+class RequestListener extends Actor {
 
-  import InputReader._
+  import RequestListener._
 
   def logger = LoggerFactory.getLogger(this.getClass)
 
@@ -32,7 +32,7 @@ class InputReader extends Actor {
   }
 
   override def receive: Receive = {
-    case InitReader =>
+    case InitListener =>
       // listen for user inputs form commandline
       println()
       println()
@@ -46,8 +46,8 @@ class InputReader extends Actor {
 
       logger.debug("Input : " + input)
 
-      // handle input via handler actor
-      val inputHandler = context.actorOf(InputHandler.props())
-      inputHandler ! InputHandler.Input(input)
+      // handle request via handler actor
+      val inputHandler = context.actorOf(RequestHandler.props())
+      inputHandler ! RequestHandler.Request(input)
   }
 }

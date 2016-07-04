@@ -1,8 +1,8 @@
 package com.pagero.taxcopy.boot
 
 import akka.actor.ActorSystem
-import com.pagero.taxcopy.actors.InputReader
-import com.pagero.taxcopy.actors.InputReader.InitReader
+import com.pagero.taxcopy.actors.RequestListener
+import com.pagero.taxcopy.actors.RequestListener.InitListener
 import org.slf4j.LoggerFactory
 
 /**
@@ -14,9 +14,11 @@ object Main extends App {
 
   logger.info("Booting application")
 
-  implicit val system = ActorSystem("tax-copy")
+  implicit val system = ActorSystem("taxcopy")
 
   // start input listener
-  val inputReader = system.actorOf(InputReader.props(), name = "InputReader")
-  inputReader ! InitReader
+  val inputReader = system.actorOf(RequestListener.props(), name = "RequestListener")
+  inputReader ! InitListener
+
+  // TODO start actor to handle etcd
 }
