@@ -17,7 +17,7 @@ trait CassandraStorageDbComp extends StorageDbComp {
     override def saveAttachment(id: String, attachment: Array[Byte]) = {
       val statement = QueryBuilder.insertInto("attachment")
         .value("id", id)
-        .value("data", id)
+        .value("data", attachment.toString)
 
       session.execute(statement)
     }
