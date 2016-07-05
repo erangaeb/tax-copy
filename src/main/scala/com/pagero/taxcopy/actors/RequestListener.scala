@@ -33,6 +33,8 @@ class RequestListener extends Actor {
 
   override def receive: Receive = {
     case InitListener =>
+      logger.info("Init request listener")
+
       // listen for user inputs form commandline
       println()
       println()
@@ -44,7 +46,7 @@ class RequestListener extends Actor {
       // read user input from the command line
       val input = scala.io.StdIn.readLine()
 
-      logger.debug("Input : " + input)
+      logger.info("Input : " + input)
 
       // handle request via handler actor
       val inputHandler = context.actorOf(RequestHandler.props())
