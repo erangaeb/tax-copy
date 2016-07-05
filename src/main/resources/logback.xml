@@ -35,7 +35,7 @@
         <appender-ref ref="FILE-ROLLING"/>
     </root>
 
-    <logger name="com.datastax.driver" level="INFO" additivity="false">
+    <logger name="com.datastax.driver" level="ERROR" additivity="false">
         <appender-ref ref="FILE-ROLLING"/>
     </logger>
 

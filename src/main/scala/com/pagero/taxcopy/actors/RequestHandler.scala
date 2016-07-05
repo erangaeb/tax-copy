@@ -35,16 +35,16 @@ class RequestHandler extends Actor with TaxCopyAttachmentReaderComp {
       actorLogger.error("Null pointer exception caught [RESTART]" + e)
 
       // notify to etcd
-      etcdAlarmHandler ! HAlarm
+      etcdAlarmHandler ! HAlarm(e.getMessage)
 
       Stop
     case e: Exception =>
       actorLogger.error("Exception caught, [STOP] " + e)
 
       // notify to etcd
-      etcdAlarmHandler ! MAlarm
+      etcdAlarmHandler ! MAlarm(e.getMessage)
 
-      Stop
+      Restart
   }
 
   override def receive: Receive = {
