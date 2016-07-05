@@ -3,11 +3,11 @@ package com.pagero.taxcopy.components
 /**
  * Created by eranga on 7/1/16.
  */
-trait PdfWaterMarkComp {
+trait PdfWaterMarkerComp {
 
-  val pdfWaterMark: PdfWaterMark
+  val pdfWaterMarker: PdfWaterMarker
 
-  trait PdfWaterMark {
+  trait PdfWaterMarker {
     def addWaterMark(pdf: Array[Byte], waterMark: String)
   }
 

@@ -10,11 +10,11 @@ import com.itextpdf.text.pdf.{ColumnText, PdfContentByte, PdfStamper, PdfReader}
 /**
  * Created by eranga on 7/1/16.
  */
-trait TaxCopyPdfWaterMarkComp extends PdfWaterMarkComp {
+trait TaxCopyPdfWaterMarkerComp extends PdfWaterMarkerComp {
 
-  val pdfWaterMark = new TaxCopyPdfWaterMark
+  val pdfWaterMarker = new TaxCopyPdfWaterMarker
 
-  class TaxCopyPdfWaterMark extends PdfWaterMark {
+  class TaxCopyPdfWaterMarker extends PdfWaterMarker {
     override def addWaterMark(pdf: Array[Byte], waterMark: String) {
       val reader: PdfReader = new PdfReader(pdf)
       val stamper: PdfStamper = new PdfStamper(reader, new FileOutputStream(s"/Users/eranga/Desktop/phd-surrey/$waterMark.pdf"))
