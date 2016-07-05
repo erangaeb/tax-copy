@@ -2,6 +2,7 @@ package com.pagero.taxcopy.actors
 
 import akka.actor.SupervisorStrategy.{Restart, Stop}
 import akka.actor.{Actor, OneForOneStrategy, Props}
+import com.pagero.taxcopy.actors.EtcdAlarmHandler.{MAlarm, HAlarm}
 import com.pagero.taxcopy.components.TaxCopyAttachmentReaderComp
 import org.slf4j.LoggerFactory
 
@@ -22,6 +23,9 @@ class RequestHandler extends Actor with TaxCopyAttachmentReaderComp {
 
   def actorLogger = LoggerFactory.getLogger(this.getClass)
 
+  // need to notify etcd alarms on failure
+  val etcdAlarmHandler = context.actorSelection("/user/EtcdAlarmHandler")
+
   override def preStart() = {
     logger.info("[_________START ACTOR__________] " + context.self.path)
   }
@@ -29,9 +33,17 @@ class RequestHandler extends Actor with TaxCopyAttachmentReaderComp {
   override def supervisorStrategy = OneForOneStrategy() {
     case e: NullPointerException =>
       actorLogger.error("Null pointer exception caught [RESTART]" + e)
-      Restart
+
+      // notify to etcd
+      etcdAlarmHandler ! HAlarm
+
+      Stop
     case e: Exception =>
       actorLogger.error("Exception caught, [STOP] " + e)
+
+      // notify to etcd
+      etcdAlarmHandler ! MAlarm
+
       Stop
   }
 
