@@ -14,10 +14,10 @@ trait CassandraStorageDbComp extends StorageDbComp {
 
   class CassandraStorageDb extends StorageDb {
 
-    override def saveAttachment(attachment: Array[Byte]) = {
+    override def saveAttachment(id: String, attachment: Array[Byte]) = {
       val statement = QueryBuilder.insertInto("attachment")
-        .value("id", "001")
-        .value("data", attachment)
+        .value("id", id)
+        .value("data", id)
 
       session.execute(statement)
     }

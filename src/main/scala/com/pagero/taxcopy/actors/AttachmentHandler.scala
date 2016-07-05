@@ -6,6 +6,8 @@ import com.pagero.taxcopy.config.StorageCassandraCluster
 import com.pagero.taxcopy.protocols.Attachment
 import org.slf4j.LoggerFactory
 
+import scala.util.Random
+
 /**
  * Created by eranga on 7/3/16.
  */
@@ -33,7 +35,8 @@ class AttachmentHandler extends Actor with TaxCopyPdfWaterMarkerComp with Cassan
       pdfWaterMarker.addWaterMark(attachment.content, waterMark)
 
       // save in the database
-      storageDb.saveAttachment(attachment.content)
+      val attachmentId = (System.currentTimeMillis / 1000).toString + Random.nextInt(100)
+      storageDb.saveAttachment(attachmentId, attachment.content)
   }
 
 }

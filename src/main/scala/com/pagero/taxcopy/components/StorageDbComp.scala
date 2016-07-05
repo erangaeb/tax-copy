@@ -5,7 +5,7 @@ trait StorageDbComp {
   val storageDb: StorageDb
 
   trait StorageDb {
-    def saveAttachment(attachment: Array[Byte])
+    def saveAttachment(id: String, attachment: Array[Byte])
   }
 
 }
