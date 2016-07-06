@@ -1,11 +1,9 @@
 package com.pagero.taxcopy.components
 
-import java.io.{ByteArrayOutputStream, FileOutputStream}
+import java.io.FileOutputStream
 
-import com.itextpdf.text.{Phrase, Font}
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font.FontFamily
-import com.itextpdf.text.pdf.{ColumnText, PdfContentByte, PdfStamper, PdfReader}
+import com.itextpdf.text._
+import com.itextpdf.text.pdf._
 
 /**
  * Created by eranga on 7/1/16.
@@ -17,18 +15,31 @@ trait TaxCopyPdfWaterMarkerComp extends PdfWaterMarkerComp {
   class TaxCopyPdfWaterMarker extends PdfWaterMarker {
     override def addWaterMark(pdf: Array[Byte], waterMark: String) {
       val reader: PdfReader = new PdfReader(pdf)
-      val stamper: PdfStamper = new PdfStamper(reader, new FileOutputStream(s"/Users/eranga/Desktop/phd-surrey/$waterMark.pdf"))
+      val stamper: PdfStamper = new PdfStamper(reader, new FileOutputStream(s"/Users/eranga/Desktop/talk/output/$waterMark.pdf"))
       //val stamper: PdfStamper = new PdfStamper(reader, new ByteArrayOutputStream())
-      val under: PdfContentByte = stamper.getUnderContent(1)
 
-      // text watermark
-      val font: Font = new Font(FontFamily.HELVETICA, 50)
-      val phrase: Phrase = new Phrase(waterMark, font)
+      // image watermark
+      val img: Image = Image.getInstance("/Users/eranga/Desktop/talk/pagero.png");
+      val imgWight = img.getScaledWidth
+      val imgHeight = img.getScaledHeight
 
-      // find x and y alignments and add phrase
-      val x = (reader.getPageSize(1).getLeft + reader.getPageSize(1).getRight) / 2
-      val y = (reader.getPageSize(1).getTop + reader.getPageSize(1).getBottom) / 2
-      ColumnText.showTextAligned(under, Element.ALIGN_CENTER, phrase, x, y, 0)
+      // transparency
+      val gState: PdfGState = new PdfGState()
+      gState.setFillOpacity(0.3f)
+
+      // watermark width/height
+      for (i <- 1 to reader.getNumberOfPages) {
+        val over: PdfContentByte = stamper.getOverContent(i)
+        val pageSize: Rectangle = reader.getPageSize(i)
+        val x = (pageSize.getLeft + pageSize.getRight) / 2
+        val y = (pageSize.getTop + pageSize.getBottom) / 2
+
+        // add watermark image
+        over.saveState()
+        over.setGState(gState)
+        over.addImage(img, imgWight, 0, 0, imgHeight, x - (imgWight / 2), y - (imgHeight / 2))
+        over.restoreState()
+      }
 
       stamper.close()
       reader.close()
