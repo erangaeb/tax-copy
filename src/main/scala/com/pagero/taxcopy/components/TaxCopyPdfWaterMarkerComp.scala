@@ -20,7 +20,7 @@ trait TaxCopyPdfWaterMarkerComp extends PdfWaterMarkerComp {
       //val stamper: PdfStamper = new PdfStamper(reader, new ByteArrayOutputStream())
 
       // image watermark
-      val img: Image = Image.getInstance("/Users/eranga/Desktop/talk/pagero.png");
+      val img: Image = Image.getInstance(waterMark)
       val imgWight = img.getScaledWidth
       val imgHeight = img.getScaledHeight
 

@@ -1,12 +1,10 @@
 package com.pagero.taxcopy.actors
 
-import akka.actor.SupervisorStrategy.{Restart, Stop}
+import akka.actor.SupervisorStrategy.Stop
 import akka.actor.{Actor, OneForOneStrategy, Props}
-import com.pagero.taxcopy.actors.EtcdAlarmHandler.{MAlarm, HAlarm}
+import com.pagero.taxcopy.actors.EtcdAlarmHandler.{HAlarm, MAlarm}
 import com.pagero.taxcopy.components.TaxCopyAttachmentReaderComp
 import org.slf4j.LoggerFactory
-
-import scala.util.Random
 
 
 object RequestHandler {
@@ -53,7 +51,7 @@ class RequestHandler extends Actor with TaxCopyAttachmentReaderComp {
       for (attachment <- attachments) {
         // start actor to process the pdf
         val waterMarker = context.actorOf(AttachmentHandler.props())
-        waterMarker ! AttachmentHandler.AttachmentWaterMark(attachment, "lambda" + Random.nextInt(100))
+        waterMarker ! AttachmentHandler.AttachmentWaterMark(attachment, "/Users/eranga/Desktop/talk/pagero.png")
       }
   }
 
