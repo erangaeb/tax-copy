@@ -37,7 +37,7 @@ class RequestHandler extends Actor with TaxCopyAttachmentReaderComp {
       // notify to etcd
       etcdAlarmHandler ! HAlarm(e.getMessage)
 
-      Restart
+      Stop
     case e: Exception =>
       actorLogger.error("Exception caught, [STOP] " + e)
 
