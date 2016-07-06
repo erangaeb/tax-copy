@@ -33,9 +33,9 @@ class EtcdAlarmHandler extends Actor {
     case LAlarm(message) =>
       logger.error("Low alarm " + message)
     case MAlarm(message) =>
-      logger.error("Low alarm " + message)
+      logger.error("Mid alarm " + message)
     case HAlarm(message) =>
-      logger.error("Low alarm " + message)
+      logger.error("High alarm " + message)
   }
 
 }
