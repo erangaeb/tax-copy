@@ -48,7 +48,7 @@ trait RequestHandlerComp {
         // notify to etcd
         etcdAlarmHandler ! MAlarm(e.getMessage)
 
-        Restart
+        Stop
     }
 
     override def receive: Receive = {
