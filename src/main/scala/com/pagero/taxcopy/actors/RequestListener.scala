@@ -49,8 +49,8 @@ class RequestListener extends Actor {
       logger.info("Input : " + input)
 
       // handle request via handler actor
-      val inputHandler = context.actorOf(RequestHandler.props())
-      inputHandler ! RequestHandler.Request(input)
+      val requestHandler = context.actorOf(RequestHandler.props())
+      requestHandler ! RequestHandler.Request(input)
 
       // listen again
       self ! InitListener
