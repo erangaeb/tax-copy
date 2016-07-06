@@ -40,7 +40,7 @@ trait AttachmentHandlerComp {
     override def receive: Receive = {
       case AttachmentWaterMark(attachment, waterMark) =>
         // add watermark
-        pdfWaterMarker.addWaterMark(attachment.content, waterMark)
+        pdfWaterMarker.addWaterMark(attachment, waterMark)
 
         // save in the database
         val attachmentId = (System.currentTimeMillis / 1000).toString + Random.nextInt(100)
