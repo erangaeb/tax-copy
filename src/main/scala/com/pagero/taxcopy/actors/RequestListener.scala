@@ -2,6 +2,7 @@ package com.pagero.taxcopy.actors
 
 import akka.actor.SupervisorStrategy.{Restart, Stop}
 import akka.actor.{Actor, OneForOneStrategy, Props}
+import com.pagero.taxcopy.components.TaxCopyAttachmentReaderComp
 import org.slf4j.LoggerFactory
 
 object RequestListener {
@@ -49,8 +50,9 @@ class RequestListener extends Actor {
       logger.info("Input : " + input)
 
       // handle request via handler actor
-      val inputHandler = context.actorOf(RequestHandler.props())
-      inputHandler ! RequestHandler.Request(input)
+      val requestHandler = new RequestHandlerComp with TaxCopyAttachmentReaderComp
+      val inputHandler = context.actorOf(requestHandler.RequestHandler.props())
+      inputHandler ! requestHandler.RequestHandler.Request(input)
 
       // listen again
       self ! InitListener
