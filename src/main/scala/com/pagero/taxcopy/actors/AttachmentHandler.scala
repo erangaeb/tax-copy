@@ -29,6 +29,11 @@ class AttachmentHandler extends Actor with TaxCopyPdfWaterMarkerComp with Cassan
     logger.info("[_________START ACTOR__________] " + context.self.path)
   }
 
+  override def postStop() = {
+    super.postStop()
+    logger.info("[_________STOP ACTOR__________] " + context.self.path)
+  }
+
   override def receive: Receive = {
     case AttachmentWaterMark(attachment, waterMark) =>
       // add watermark

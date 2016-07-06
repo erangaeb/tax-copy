@@ -25,10 +25,10 @@ class RequestListener extends Actor {
   override def supervisorStrategy = OneForOneStrategy() {
     case e: NullPointerException =>
       logger.error("Null pointer exception caught [RESTART]" + e)
-      Restart
+      Stop
     case e: Exception =>
       logger.error("Exception caught, [STOP] " + e)
-      Stop
+      Restart
   }
 
   override def receive: Receive = {
@@ -51,5 +51,8 @@ class RequestListener extends Actor {
       // handle request via handler actor
       val inputHandler = context.actorOf(RequestHandler.props())
       inputHandler ! RequestHandler.Request(input)
+
+      // listen again
+      self ! InitListener
   }
 }
